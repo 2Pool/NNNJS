@@ -1,0 +1,16 @@
+{
+  "name": "annnjs",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "test": "ava"
+  },
+  "devDependencies": {
+    "ava": "1.0.0-beta.4"
+  },
+  "dependencies": {
+    "mathjs": "^4.1.2",
+    "prettier": "^1.12.1"
+  }
+}
