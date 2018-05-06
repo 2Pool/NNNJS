@@ -71,7 +71,7 @@ class Neuron {
   // this.output = scalar
 
   constructor(n) {
-    this.weights = math.ones(n + 1);
+    this.weights = math.range(0, n + 1).map(() => Math.random() + 0.001);
   }
 
   sigmoid(z) {
@@ -94,15 +94,16 @@ class Neuron {
     // ALGO
     // impact = error * sigmoidGradient(this.output); == scalar
 
-    const impact = error * this.sigmoidGradient(this.output);
+    const update = math.multiply(this.inputs, error);
+    const scaledUpdate = math.multiply(update, 1 / numExamples * learningRate);
 
-    // deltas = inputErrors * this.inputs' == (n + 1) x 1
-    const deltas = math.multiply(this.inputs, impact);
-    const scaledDeltas = math.multiply(deltas, 1 / numExamples * learningRate);
-    // performUpdate()
-    this.updateWeights(scaledDeltas);
-    // return inputsError (or feedback directly?)
-    return scaledDeltas; // (n + 1) x 1 –– additional weight should be ignored
+    this.updateWeights(scaledUpdate);
+
+    const feedback = math.dotMultiply(this.weights, update);
+    const gradient = math.dotMultiply(this.inputs, math.subtract(1, this.inputs));
+    const derivative = math.dotMultiply(feedback, gradient);
+
+    return derivative;
   }
 
   /**
@@ -113,7 +114,7 @@ class Neuron {
     // inputs is n x 1
 
     // SAVE INPUTS to this.inputs
-    const inputsWithBias = inputs.clone().resize([inputs.size()[0] + 1]);
+    const inputsWithBias = inputs.clone().resize([inputs.size()[0] + 1], 1);
 
     this.inputs = inputsWithBias; // (n + 1) x 1
 
@@ -127,7 +128,7 @@ class Neuron {
   }
 
   updateWeights(deltas) {
-    this.weights = math.add(this.weights, deltas);
+    this.weights = math.subtract(this.weights, deltas);
   }
 }
 

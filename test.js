@@ -27,7 +27,7 @@ test('Gets better at XOR', t => {
 test('Gets better at XOR for real?', t => {
   const network = new Network(2, 1);
 
-  for (let i = 0; i < 1000; i++) {
+  for (let i = 0; i < 10000; i++) {
     network.trainOne({ inputs: [0, 0], outputs: [0] });
     network.trainOne({ inputs: [1, 0], outputs: [1] });
     network.trainOne({ inputs: [0, 1], outputs: [1] });
